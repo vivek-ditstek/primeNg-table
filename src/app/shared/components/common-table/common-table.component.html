@@ -100,46 +100,7 @@
         <!-- No Record Found... -->
         <ng-template pTemplate="emptymessage">
             <div class="nodataFound" style="color: red;">No Record Found... </div>
-        </ng-template>
-
-
-
-
-        <!-- Row Expandable -->
-        <!-- <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns" let-rowIndex="rowIndex"
-        let-expanded="expanded">
-        <ng-container *ngFor="let item of rowData.children">
-            <tr [pSelectableRow]="item" class="childRow" [pSelectableRowIndex]="rowIndex">
-                <td>
-                    <p-checkbox [value]="item" (click)="selectedChildren(selectedChildrenRow,rowData)"
-                        name="parentCheckbox" [(ngModel)]="selectedChildrenRow"></p-checkbox>
-                </td>
-                <td></td>
-                <td [pEditableColumn]="rowData" *ngFor="let col of columns" style="width: 300px">
-                    <p-cellEditor *ngIf="!col.editable; else editableTemplate">
-                        <ng-template pTemplate="input">
-                            <input pInputText *ngIf="col.type =='text' || col.type =='number'" [type]="col.type"
-                                (keypress)="$event.key == 'e' ? $event.preventDefault():''"
-                                [(ngModel)]="item[col.field]" style="width:100%" />
-                            <p-dropdown *ngIf="col.type == 'dropdown'" [(ngModel)]="item[col.field]"
-                                [options]="options[col.field]"></p-dropdown>
-                            <p-calendar *ngIf="col.type == 'date'" appendTo="body" [(ngModel)]="item[col.field]"
-                                dateFormat="dd/mm/yy"></p-calendar>
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{ col.type === 'date' ? dateFormat(item[col.field]) : item[col.field] }}
-                            <p *ngIf="col.editable === true" style="color:red">
-                                don't editable columns
-                            </p>
-                        </ng-template>
-                    </p-cellEditor>
-                    <ng-template #editableTemplate>
-                        {{ item[col.field] }}
-                    </ng-template>
-                </td>
-            </tr>
-        </ng-container>
-    </ng-template> -->
+        </ng-template>    
     </p-table>
 
 
