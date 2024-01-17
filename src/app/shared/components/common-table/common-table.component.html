@@ -1,0 +1,224 @@
+
+<div class="card">
+    <p-toast></p-toast>
+
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table #dt class="commonTable" [columns]="cols" [(selection)]="selectedProducts" [value]="employees"
+        [(selection)]="selectedRows" [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" styleClass="mt-3"
+        dataKey="claimId" editMode="row" [metaKeySelection]="true" [reorderableColumns]="true"
+        (onEditInit)="onEditInit($event)" (onEditCancel)="onEditCancel($event)"
+        (onEditComplete)="onEditComplete($event)">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Manage Products</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Search..." />
+                </span>
+                <button pButton pRipple icon="pi pi-undo" class="p-button-text" (click)="undo()"
+                    [disabled]="undoStack.length === 0">Undo</button>
+                <button pButton pRipple icon=" pi pi-sync 
+                " class="p-button-text" (click)="redo()" [disabled]="redoStack.length === 0">Redo</button>
+            </div>
+        </ng-template>
+
+        <!-- Dynamic Labels -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th>
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" alignfrozen="left" pFrozenColumn
+                    [frozen]="col.isfrozencolumn" style="min-width: 50px" pReorderableColumn>
+                    {{ col.header }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                    <p-columnFilter type="text" field="title" display="menu" class="ml-auto" [field]="col.field"
+                        [showAddButton]="false">
+                    </p-columnFilter>
+                </th>
+            </tr>
+        </ng-template>
+
+        <!-- Dynamic Table Data -->
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-rowIndex="rowIndex">
+            <tr [pEditableRow]="rowData" pDraggable="products" (click)="onRowClick(rowData, rowIndex)">
+                <td>
+                    <p-tableCheckbox [value]="rowData" ngDefaultControl></p-tableCheckbox>
+                </td>
+
+             
+
+                <!-- Cell Edit in Dynamic Data -->
+                <td *ngFor="let col of columns" style="width: 300px" pEditableColumn [pEditableColumn]="rowData"
+                    [pEditableColumnRowIndex]="rowIndex">
+                    <p-cellEditor *ngIf="!col.editable; else editableTemplate">
+                        <ng-template pTemplate="input">
+                            <input pInputText *ngIf="col.type=='text' || col.type=='number'" [type]="col.type"
+                                (keypress)="$event.key == 'e' ? $event.preventDefault():''"
+                                [(ngModel)]="rowData[col.field]" style="width:100%" />
+                            <p-dropdown *ngIf="col.type == 'dropdown'" [(ngModel)]="rowData[col.field]"
+                                [options]="options[col.field]" optionLabel="label" optionValue="value"></p-dropdown>
+                            <p-calendar *ngIf="col.type == 'date'" appendTo="body" dateFormat="dd/mm/yy"
+                                [(ngModel)]="rowData[col.field]">
+                            </p-calendar>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ col.type === 'date' ? dateFormat(rowData[col.field]) : rowData[col.field] }}
+                        </ng-template>
+                    </p-cellEditor>
+                    <ng-template #editableTemplate>
+                        {{ rowData[col.field] }}
+                    </ng-template>
+                </td>
+
+                <td style="text-align:center">
+
+                    <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                        (click)="onRowEditInit(rowData)" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                        (click)="onRowEditSave(rowData)"
+                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                        (click)="onRowEditCancel(rowData, rowIndex)"
+                        class="p-button-rounded p-button-text p-button-danger"></button> -->
+                    <!-- <button pButton pRipple icon="pi pi-undo" class="p-button-text" (click)="undo()">Undo</button>
+                    <button pButton pRipple icon=" pi pi-sync 
+                    " class="p-button-text" (click)="redo()" [disabled]="redoStack.length === 0">Redo</button> -->
+
+                </td>
+            </tr>
+        </ng-template>
+
+        <!-- No Record Found... -->
+        <ng-template pTemplate="emptymessage">
+            <div class="nodataFound" style="color: red;">No Record Found... </div>
+        </ng-template>
+
+
+
+
+        <!-- Row Expandable -->
+        <!-- <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+        let-expanded="expanded">
+        <ng-container *ngFor="let item of rowData.children">
+            <tr [pSelectableRow]="item" class="childRow" [pSelectableRowIndex]="rowIndex">
+                <td>
+                    <p-checkbox [value]="item" (click)="selectedChildren(selectedChildrenRow,rowData)"
+                        name="parentCheckbox" [(ngModel)]="selectedChildrenRow"></p-checkbox>
+                </td>
+                <td></td>
+                <td [pEditableColumn]="rowData" *ngFor="let col of columns" style="width: 300px">
+                    <p-cellEditor *ngIf="!col.editable; else editableTemplate">
+                        <ng-template pTemplate="input">
+                            <input pInputText *ngIf="col.type =='text' || col.type =='number'" [type]="col.type"
+                                (keypress)="$event.key == 'e' ? $event.preventDefault():''"
+                                [(ngModel)]="item[col.field]" style="width:100%" />
+                            <p-dropdown *ngIf="col.type == 'dropdown'" [(ngModel)]="item[col.field]"
+                                [options]="options[col.field]"></p-dropdown>
+                            <p-calendar *ngIf="col.type == 'date'" appendTo="body" [(ngModel)]="item[col.field]"
+                                dateFormat="dd/mm/yy"></p-calendar>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ col.type === 'date' ? dateFormat(item[col.field]) : item[col.field] }}
+                            <p *ngIf="col.editable === true" style="color:red">
+                                don't editable columns
+                            </p>
+                        </ng-template>
+                    </p-cellEditor>
+                    <ng-template #editableTemplate>
+                        {{ item[col.field] }}
+                    </ng-template>
+                </td>
+            </tr>
+        </ng-container>
+    </ng-template> -->
+    </p-table>
+
+
+
+    <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true"
+        styleClass="p-fluid">
+        <ng-template pTemplate="content">
+
+            <div class="field">
+                <label for="inventoryStatus">Priority Status</label>
+                <p-dropdown [(ngModel)]="product.priority" inputId="inventoryStatus" [options]="options.priority">
+                </p-dropdown>
+                <small class="p-invalid" *ngIf="submitted && !product.priority">Name is required.</small>
+
+            </div>
+
+
+
+            <div class="p-field">
+                <label for="name">Name</label>
+                <input type="text" pInputText id="name" [(ngModel)]="product.patientName" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !product.patientName">Name is required.</small>
+            </div>
+
+
+
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="price">DOB</label>
+                    <p-calendar [(ngModel)]="product.dob" [showIcon]="true" [maxDate]="maxDate"></p-calendar>
+                    <small class="p-invalid" *ngIf="submitted && !product.dob">Phone number is required.</small>
+
+                </div>
+
+                <div class="field col">
+                    <label for="price">Claim Status</label>
+                    <p-dropdown [(ngModel)]="product.claimStatus" inputId="inventoryStatus"
+                        [options]="options.claimStatus">
+                    </p-dropdown>
+                </div>
+                <div class="field col">
+                    <label for="quantity">Phone Number</label>
+                    <input id="quantity" pInputText type="number" [(ngModel)]="product.phoneNo" />
+                    <small class="p-invalid" *ngIf="submitted && !product.phoneNo">Phone number is required.</small>
+
+                </div>
+                <div class="field col">
+                    <label for="quantity">Country</label>
+                    <input id="quantity" pInputText type="text" [(ngModel)]="product.country" />
+                    <small class="p-invalid" *ngIf="submitted && !product.country">Country is required.</small>
+
+                </div>
+
+                <div class="field col">
+                    <label for="quantity">Year</label>
+                    <input id="quantity" pInputText type="number" [(ngModel)]="product.year" />
+                    <small class="p-invalid" *ngIf="submitted && !product.country">Year is required.</small>
+
+                </div>
+            </div>
+
+
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                (click)="saveProduct()"></button>
+        </ng-template>
+    </p-dialog>
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+</div>
+
+
+
+
+<!-- <div class="count-info">
+    Selected Parent: {{ onRowSelect(selectedRows?.name) }}
+    <br>
+    Children Count: {{ onRowSelect(childrenCount) }}
+  </div> -->

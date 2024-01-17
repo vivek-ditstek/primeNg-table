@@ -1,0 +1,198 @@
+{
+  "employees" : [
+    {
+      "claimId": 1,
+      "priority": "p1",
+      "patientName": "John",
+      "dob": "15/5/1990",
+      "claimStatus": "pending",
+      "phoneNo": "9876543210",
+      "country": "Slovenia",
+      "year":"2023",
+      "children": [
+        {
+          "claimId": 1,
+          "priority": "p2",
+          "patientName": "david",
+          "dob": "16/10/1999",
+          "claimStatus": "paid",
+          "phoneNo": "9195598241",
+          "country": "Mexico",
+          "year":"2022"
+        }
+      ]
+    },
+    {
+      "claimId": 2,
+      "priority": "p1",
+      "patientName": "james",
+      "dob": "14/5/1991",
+      "claimStatus": "pending",
+      "phoneNo": "9576543210",
+      "country": "Paraguay",
+      "year":"2021"
+    },
+    {
+      "claimId": 3,
+      "priority": "p1",
+      "patientName": "Leena",
+      "dob": "18/5/1980",
+      "claimStatus": "pending",
+      "phoneNo": "5646543210",
+      "country": "Mexico",
+      "year":"2020"
+    
+    },
+    {
+      "claimId": 4,
+      "priority": "p1",
+      "patientName": "Mitsue",
+      "dob": "15/5/1990",
+      "claimStatus": "pending",
+      "phoneNo": "9874543210",
+      "country": "Mexico",
+      "year":"2018"
+   
+    },
+    {
+      "claimId": 5,
+      "priority": "p1",
+      "patientName": "Kiley",
+      "dob": "15/7/1998",
+      "claimStatus": "pending",
+      "phoneNo": "6756543210",
+      "country": "Mexico",
+      "year":"2016"
+    },
+    {
+      "claimId": 6,
+      "priority": "p1",
+      "patientName": "Foller",
+      "dob": "9/5/1965",
+      "claimStatus": "pending",
+      "phoneNo": "2376543210",
+      "country": "Mexico",
+      "year":"2014"
+    },
+    {
+      "claimId": 7,
+      "priority": "p1",
+      "patientName": "Sage",
+      "dob": "12/6/1965",
+      "claimStatus": "pending",
+      "phoneNo": "7656543210",
+      "country": "Mexico",
+      "year":"2012"
+    },
+    {
+      "claimId": 8,
+      "priority": "p1",
+      "patientName": "Minna",
+      "dob": "11/5/1670",
+      "claimStatus": "pending",
+      "phoneNo": "321543210",
+      "country": "South Africa",
+      "year":"2004"
+    },
+    {
+      "claimId": 9,
+      "priority": "p1",
+      "patientName": "Cammy",
+      "dob": "12/4/1440",
+      "claimStatus": "pending",
+      "phoneNo": "1265643210",
+      "country": "Panama",
+      "year":"2010"
+    },
+    {
+      "claimId": 10,
+      "priority": "p1",
+      "patientName": "Amigon",
+      "dob": "25/5/1390",
+      "claimStatus": "pending",
+      "phoneNo": "2365143210",
+      "country": "Slovenia",
+      "year":"2009"
+    },
+    {
+      "claimId": 11,
+      "priority": "p1",
+      "patientName": "Cammy",
+      "dob": "12/4/1440",
+      "claimStatus": "pending",
+      "phoneNo": "1265643210",
+      "country": "Egypt",
+      "year":"2008"
+    },
+    {
+      "claimId": 12,
+      "priority": "p1",
+      "patientName": "Minna",
+      "dob": "11/5/1670",
+      "claimStatus": "pending",
+      "phoneNo": "321543210",
+      "country": "Algeria",
+      "year":"2006"
+    }
+  ],
+  "cols": [
+    { 
+      "field": "claimId", 
+      "header": "Claim Id",
+      "editable" : true,
+      "icon": "true"
+    },
+    { 
+      "field": "priority", 
+      "header": "Priority",
+      "type": "dropdown",
+      "editable" :false
+    },
+    { 
+      "field": "patientName", 
+      "header": "Patient Name",
+      "type": "text",
+      "editable" :false
+    },
+    { 
+      "field": "dob", 
+      "header": "DOB",
+      "type": "date",
+      "editable" :false
+    },
+    { 
+      "field": "claimStatus", 
+      "header": "Claim Status",
+      "type": "dropdown",
+      "editable" :false
+    },
+    { 
+      "field": "phoneNo", 
+      "header": "Phone No",
+      "type": "number",
+      "editable" :false
+    },
+    { 
+      "field": "country", 
+      "header": "Country",
+      "type": "text",
+      "editable" :false
+    },
+    { 
+      "field": "year", 
+      "header": "Year",
+      "type": "number",
+      "editable" :false
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
